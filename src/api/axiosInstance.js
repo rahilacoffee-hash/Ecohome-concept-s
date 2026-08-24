@@ -21,9 +21,14 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    const isRefreshRequest = originalRequest?.url?.includes("/auth/refresh");
+    const isAuthRequest = [
+      "/auth/login",
+      "/auth/setup",
+      "/auth/verify-email",
+      "/auth/refresh",
+    ].some((path) => originalRequest?.url?.includes(path));
 
-    if (error.response?.status !== 401 || originalRequest?._retry || isRefreshRequest) {
+    if (error.response?.status !== 401 || originalRequest?._retry || isAuthRequest) {
       return Promise.reject(error);
     }
 
