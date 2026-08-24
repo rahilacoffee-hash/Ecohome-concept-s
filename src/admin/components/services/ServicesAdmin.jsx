@@ -1,0 +1,49 @@
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Eye, Pencil, Plus, Trash2 } from "lucide-react";
+import axiosInstance from "../../../api/axiosInstance";
+
+const blankService = { title: "", slug: "", brief: "", description: "", image: "", active: true };
+
+export default function ServicesAdmin() {
+  const [services, setServices] = useState([]);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [serviceToDelete, setServiceToDelete] = useState(null);
+
+  const loadServices = async () => {
+    try { setIsLoading(true); setError(""); const { data } = await axiosInstance.get("/admin/services"); setServices(data.data.services || []); }
+    catch (requestError) { setError(requestError.response?.data?.message || "Unable to load services."); }
+    finally { setIsLoading(false); }
+  };
+
+  useEffect(() => { loadServices(); }, []);
+
+  const removeService = async () => {
+    try { await axiosInstance.delete(`/admin/services/${serviceToDelete.id}`); setServices((current) => current.filter((service) => service.id !== serviceToDelete.id)); setServiceToDelete(null); }
+    catch (requestError) { setError(requestError.response?.data?.message || "Unable to delete service."); }
+  };
+
+  return <div className="space-y-6 pt-9">
+    <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><p className="text-xs font-semibold uppercase tracking-[.2em] text-slate-400">Offerings</p><h1 className="mt-1 text-3xl font-black text-[#102A72]">Services</h1><p className="mt-2 text-sm text-slate-500">Manage services shown on the website.</p></div><Link to="/admin/services/new" className="flex w-fit items-center gap-2 rounded-xl bg-[#73B72B] px-5 py-3 font-bold text-white"><Plus size={18} /> Add Service</Link></div>
+    {error && <div className="rounded-xl bg-red-50 p-4 text-sm text-red-600">{error}</div>}
+    {isLoading ? <div className="rounded-3xl bg-white p-12 text-center font-semibold text-[#102A72]">Loading services…</div> : <div className="overflow-hidden rounded-3xl bg-white shadow-sm"><table className="w-full text-left text-sm"><thead className="border-b bg-slate-50 text-slate-500"><tr><th className="px-6 py-4">Service</th><th className="px-6 py-4">Slug</th><th className="px-6 py-4">Status</th><th className="px-6 py-4 text-right">Actions</th></tr></thead><tbody>{services.map((service) => <tr key={service.id} className="border-b border-slate-100"><td className="px-6 py-4"><p className="font-bold text-[#102A72]">{service.title}</p><p className="mt-1 max-w-md truncate text-slate-500">{service.brief}</p></td><td className="px-6 py-4 text-slate-500">{service.slug}</td><td className="px-6 py-4"><span className={`rounded-full px-3 py-1 text-xs font-bold ${service.active ? "bg-green-50 text-green-700" : "bg-slate-100 text-slate-500"}`}>{service.active ? "Active" : "Inactive"}</span></td><td className="px-6 py-4"><div className="flex justify-end gap-2"><Link to={`/admin/services/${service.id}`} className="rounded-lg p-2 text-slate-500 hover:bg-slate-100"><Eye size={17} /></Link><Link to={`/admin/services/${service.id}/edit`} className="rounded-lg p-2 text-slate-500 hover:bg-slate-100"><Pencil size={17} /></Link><button onClick={() => setServiceToDelete(service)} className="rounded-lg p-2 text-red-500 hover:bg-red-50"><Trash2 size={17} /></button></div></td></tr>)}</tbody></table>{services.length === 0 && <p className="p-12 text-center text-slate-500">No services yet. Add your first service.</p>}</div>}
+    {serviceToDelete && <ConfirmDelete title={serviceToDelete.title} onCancel={() => setServiceToDelete(null)} onConfirm={removeService} />}
+  </div>;
+}
+
+export function ServiceForm() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [form, setForm] = useState(blankService); const [error, setError] = useState(""); const [isLoading, setIsLoading] = useState(id !== "new"); const [isSaving, setIsSaving] = useState(false);
+  useEffect(() => { if (id === "new") return; axiosInstance.get(`/admin/services/${id}`).then(({ data }) => setForm({ ...blankService, ...data.data.service, description: data.data.service.description || "", image: data.data.service.image || "" })).catch((requestError) => setError(requestError.response?.data?.message || "Unable to load service.")).finally(() => setIsLoading(false)); }, [id]);
+  const change = (event) => setForm((current) => ({ ...current, [event.target.name]: event.target.type === "checkbox" ? event.target.checked : event.target.value }));
+  const submit = async (event) => { event.preventDefault(); try { setIsSaving(true); setError(""); const payload = { ...form, description: form.description || null, image: form.image || null }; if (id === "new") await axiosInstance.post("/admin/services", payload); else await axiosInstance.patch(`/admin/services/${id}`, payload); navigate("/admin/services"); } catch (requestError) { setError(requestError.response?.data?.message || "Unable to save service."); } finally { setIsSaving(false); } };
+  if (isLoading) return <div className="rounded-3xl bg-white p-12 text-center">Loading service…</div>;
+  return <form onSubmit={submit} className="mx-auto max-w-3xl space-y-6 pt-9"><div><Link to="/admin/services" className="text-sm text-slate-500 hover:text-[#73B72B]">← Back to services</Link><h1 className="mt-4 text-3xl font-black text-[#102A72]">{id === "new" ? "Add Service" : "Edit Service"}</h1></div>{error && <p className="rounded-xl bg-red-50 p-4 text-red-600">{error}</p>}<section className="grid gap-5 rounded-3xl bg-white p-6 shadow-sm md:grid-cols-2"><Field label="Title" name="title" value={form.title} onChange={change} required /><Field label="Slug" name="slug" value={form.slug} onChange={change} required /><Field label="Brief" name="brief" value={form.brief} onChange={change} required /><Field label="Image URL" name="image" value={form.image} onChange={change} /><label className="md:col-span-2"><span className="mb-2 block font-semibold text-[#102A72]">Description</span><textarea name="description" value={form.description} onChange={change} rows="6" className="w-full rounded-xl border border-slate-200 p-3 outline-none focus:border-[#73B72B]" /></label><label className="flex items-center gap-3 font-semibold text-[#102A72]"><input type="checkbox" name="active" checked={form.active} onChange={change} /> Show this service publicly</label></section><div className="flex justify-end gap-3"><Link to="/admin/services" className="rounded-xl border px-5 py-3 font-bold">Cancel</Link><button disabled={isSaving} className="rounded-xl bg-[#73B72B] px-5 py-3 font-bold text-white disabled:opacity-60">{isSaving ? "Saving…" : "Save Service"}</button></div></form>;
+}
+
+export function ServiceDetails() { const { id } = useParams(); const [service, setService] = useState(null); const [error, setError] = useState(""); useEffect(() => { axiosInstance.get(`/admin/services/${id}`).then(({ data }) => setService(data.data.service)).catch((requestError) => setError(requestError.response?.data?.message || "Unable to load service.")); }, [id]); if (!service && !error) return <div className="rounded-3xl bg-white p-12 text-center">Loading service…</div>; if (error) return <div className="rounded-3xl bg-white p-12 text-center text-red-600">{error}</div>; return <div className="mx-auto max-w-3xl space-y-6 pt-9"><Link to="/admin/services" className="text-sm text-slate-500 hover:text-[#73B72B]">← Back to services</Link><section className="overflow-hidden rounded-3xl bg-white shadow-sm">{service.image && <img src={service.image} alt={service.title} className="h-72 w-full object-cover" />}<div className="p-7"><div className="flex items-start justify-between gap-4"><div><h1 className="text-3xl font-black text-[#102A72]">{service.title}</h1><p className="mt-2 text-slate-500">/{service.slug}</p></div><Link to={`/admin/services/${id}/edit`} className="rounded-xl bg-[#73B72B] px-5 py-3 font-bold text-white">Edit</Link></div><p className="mt-6 font-semibold text-slate-700">{service.brief}</p>{service.description && <p className="mt-4 whitespace-pre-line leading-7 text-slate-600">{service.description}</p>}</div></section></div>; }
+
+function Field({ label, ...props }) { return <label><span className="mb-2 block font-semibold text-[#102A72]">{label}</span><input {...props} className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-[#73B72B]" /></label>; }
+function ConfirmDelete({ title, onCancel, onConfirm }) { return <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/40 p-4"><div className="w-full max-w-sm rounded-2xl bg-white p-6"><h2 className="text-xl font-black text-[#102A72]">Delete service?</h2><p className="mt-3 text-slate-600">This permanently deletes “{title}”.</p><div className="mt-6 flex justify-end gap-3"><button onClick={onCancel} className="rounded-xl border px-4 py-2">Cancel</button><button onClick={onConfirm} className="rounded-xl bg-red-600 px-4 py-2 font-bold text-white">Delete</button></div></div></div>; }

@@ -17,6 +17,7 @@ import AuthPage from "./admin/auth/AuthPage";
 import RequireAdmin from "./admin/auth/RequireAdmin";
 import HomepageCms from "./admin/components/HomepageCms";
 import Contacts from "./admin/components/Contacts";
+import ServicesAdmin, { ServiceDetails as AdminServiceDetails, ServiceForm } from "./admin/components/services/ServicesAdmin";
 
 const App = () => {
   return (
@@ -39,7 +40,10 @@ const App = () => {
           <Route path="projects/new" element={<ProjectEdit />} />
           <Route path="projects/:id" element={<AdminProjectDetails />} />
           <Route path="projects/:id/edit" element={<ProjectEdit />} />
-          <Route path="services" element={<AdminResource resource="services" title="Services" />} />
+          <Route path="services" element={<ServicesAdmin />} />
+          <Route path="services/new" element={<ServiceForm />} />
+          <Route path="services/:id" element={<AdminServiceDetails />} />
+          <Route path="services/:id/edit" element={<ServiceForm />} />
           <Route path="testimonials" element={<AdminResource resource="testimonials" title="Testimonials" />} />
           <Route path="contacts" element={<Contacts />} />
         </Route>
