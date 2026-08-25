@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { Plus, Pencil, Trash2, X, Upload } from "lucide-react";
 import axiosInstance from "../../api/axiosInstance";
+import { useToast } from "../../components/Toast";
 
 let emptyForm = { number: "", title: "", description: "", features: [""] };
 
 function Servicess() {
+  const toast = useToast();
   let [services, setServices] = useState([]);
   let [loading, setLoading] = useState(true);
   let [error, setError] = useState("");
@@ -109,7 +111,7 @@ function Servicess() {
       await axiosInstance.delete(`/service/${id}`);
       setServices((prev) => prev.filter((s) => s._id !== id));
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to delete service");
+      toast.error(err.response?.data?.message || "Failed to delete service");
     } finally {
       setConfirmDeleteId(null);
     }

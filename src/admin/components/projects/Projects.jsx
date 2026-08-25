@@ -12,8 +12,10 @@ import {
 } from "lucide-react";
 
 import axiosInstance from "../../../api/axiosInstance";
+import { useToast } from "../../../components/Toast";
 
 function Projects() {
+  const toast = useToast();
   const [projects, setProjects] = useState([]);
 
   const [loading, setLoading] = useState(true);
@@ -77,7 +79,7 @@ function Projects() {
     } catch (error) {
       console.error("Delete project error:", error);
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Unable to delete project."
       );

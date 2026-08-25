@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Trash2 } from "lucide-react";
 import axiosInstance from "../../api/axiosInstance";
+import { useToast } from "../../components/Toast";
 
 let statusStyles = {
   Pending: "bg-[#F0EDE6] text-[#666]",
@@ -10,6 +11,7 @@ let statusStyles = {
 };
 
 function ConsultationTable({ consultations, onDeleted }) {
+  const toast = useToast();
   let navigate = useNavigate();
   let [confirmDeleteId, setConfirmDeleteId] = useState(null);
   let [busyId, setBusyId] = useState(null);
@@ -21,7 +23,7 @@ function ConsultationTable({ consultations, onDeleted }) {
       await axiosInstance.delete(`/consultation/${id}`);
       onDeleted(id);
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to delete consultation");
+      toast.error(err.response?.data?.message || "Failed to delete consultation");
     } finally {
       setBusyId(null);
       setConfirmDeleteId(null);

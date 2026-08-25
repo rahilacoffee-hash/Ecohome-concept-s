@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Ban, CheckCircle2, Trash2 } from "lucide-react";
 import axiosInstance from "../../api/axiosInstance";
+import { useToast } from "../../components/Toast";
 
 let roleStyles = {
   ADMIN: "bg-[#C8A96A]/20 text-[#8a6d3b]",
@@ -14,6 +15,7 @@ let statusStyles = {
 };
 
 function UserTable({ users, onUserUpdated, onUserDeleted, currentUserId }) {
+  const toast = useToast();
   let [actioningId, setActioningId] = useState(null);
   let [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
@@ -25,7 +27,7 @@ function UserTable({ users, onUserUpdated, onUserDeleted, currentUserId }) {
       await axiosInstance.put(`/user/${user._id}/status`, { status: newStatus });
       onUserUpdated(user._id, { status: newStatus });
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to update user status");
+      toast.error(err.response?.data?.message || "Failed to update user status");
     } finally {
       setActioningId(null);
     }
@@ -38,7 +40,7 @@ function UserTable({ users, onUserUpdated, onUserDeleted, currentUserId }) {
       await axiosInstance.delete(`/user/${userId}`);
       onUserDeleted(userId);
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to delete user");
+      toast.error(err.response?.data?.message || "Failed to delete user");
     } finally {
       setActioningId(null);
       setConfirmDeleteId(null);

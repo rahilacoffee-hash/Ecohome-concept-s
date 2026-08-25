@@ -2,8 +2,10 @@ import { useState } from "react";
 import { Star, Trash2, Link as LinkIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
+import { useToast } from "../../components/Toast";
 
 function ReviewTable({ reviews, onReviewDeleted }) {
+  const toast = useToast();
   let [deletingId, setDeletingId] = useState(null);
   let [confirmId, setConfirmId] = useState(null);
 
@@ -13,7 +15,7 @@ function ReviewTable({ reviews, onReviewDeleted }) {
       await axiosInstance.delete(`/product/reviews/${reviewId}`);
       onReviewDeleted(reviewId);
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to delete review");
+      toast.error(err.response?.data?.message || "Failed to delete review");
     } finally {
       setDeletingId(null);
       setConfirmId(null);

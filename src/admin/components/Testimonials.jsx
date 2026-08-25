@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { Plus, Star, Pencil, Trash2, X, Upload } from "lucide-react";
 import axiosInstance from "../../api/axiosInstance";
+import { useToast } from "../../components/Toast";
 
 let emptyForm = { name: "", role: "", quote: "", project: "", rating: 5, isFeatured: true };
 
 function Testimonials() {
+  const toast = useToast();
   let [testimonials, setTestimonials] = useState([]);
   let [loading, setLoading] = useState(true);
   let [error, setError] = useState("");
@@ -95,7 +97,7 @@ function Testimonials() {
       await axiosInstance.delete(`/testimonial/${id}`);
       setTestimonials((prev) => prev.filter((t) => t._id !== id));
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to delete testimonial");
+      toast.error(err.response?.data?.message || "Failed to delete testimonial");
     } finally {
       setConfirmDeleteId(null);
     }
