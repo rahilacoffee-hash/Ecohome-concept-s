@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { FaHardHat, FaLeaf, FaShieldAlt, FaUsers } from "react-icons/fa";
 import { fetchServiceBySlug } from "../services/services";
+import { getServiceBySlug as getBuiltInServiceBySlug } from "../data/Index";
 
 import Hero from "../sections/serviceDetails/Hero";
 import Overview from "../sections/serviceDetails/Overview";
@@ -54,7 +55,11 @@ export default function ServiceDetails() {
 
     fetchServiceBySlug(slug)
       .then((data) => active && setService(toServiceDetails(data)))
-      .catch((requestError) => active && setError(requestError))
+      .catch((requestError) => {
+        const builtInService = requestError.status === 404 && getBuiltInServiceBySlug(slug);
+        if (active && builtInService) setService(builtInService);
+        else if (active) setError(requestError);
+      })
       .finally(() => active && setIsLoading(false));
 
     return () => {
