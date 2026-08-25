@@ -52,9 +52,7 @@ export default function ServiceCard({ service }) {
                 group-hover:rotate-6
               "
             >
-              <Icon size={22} className="sm:hidden" />
-              <Icon size={28} className="hidden sm:block lg:hidden" />
-              <Icon size={34} className="hidden lg:block" />
+              
             </div>
 
             <h3

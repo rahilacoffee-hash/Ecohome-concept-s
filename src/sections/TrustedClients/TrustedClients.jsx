@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import {
   Building2,
   Users,
@@ -6,8 +7,9 @@ import {
   Award,
 } from "lucide-react";
 
-import clients from "./clients";
+import defaultClients from "./clients";
 import LogoMarquee from "./LogoMarquee";
+import { fetchHomepageContent } from "../../services/homepage";
 
 const stats = [
   {
@@ -37,6 +39,18 @@ const stats = [
 ];
 
 export default function TrustedClients() {
+  const [clients, setClients] = useState(defaultClients);
+
+  useEffect(() => {
+    fetchHomepageContent()
+      .then((content) => {
+        const clientLogos = content.hero?.clientLogos;
+        if (Array.isArray(clientLogos) && clientLogos.length) {
+          setClients(clientLogos.filter((client) => client.logo).map((client, index) => ({ id: client.id || index, category: "Partner", ...client })));
+        }
+      })
+      .catch(() => {});
+  }, []);
   return (
     <section
       id="clients"
