@@ -1,5 +1,5 @@
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft,
@@ -7,6 +7,8 @@ import {
   RefreshCw,
   AlertCircle,
   Upload,
+  ImagePlus,
+  X,
 } from "lucide-react";
 
 import axiosInstance from "../../../api/axiosInstance";
@@ -21,6 +23,8 @@ function ProjectEdit() {
   const [error, setError] = useState("");
   const [coverImageFile, setCoverImageFile] = useState(null);
   const [coverPreview, setCoverPreview] = useState("");
+  const [galleryFiles, setGalleryFiles] = useState([]);
+  const galleryPreviewsRef = useRef([]);
 
   const [form, setForm] = useState({
     title: "",
@@ -83,6 +87,10 @@ function ProjectEdit() {
     else setLoading(false);
   }, [isNew, fetchProject]);
 
+  useEffect(() => () => {
+    galleryPreviewsRef.current.forEach((preview) => URL.revokeObjectURL(preview));
+  }, []);
+
   /*
   |--------------------------------------------------------------------------
   | Input
@@ -103,6 +111,43 @@ function ProjectEdit() {
     if (!file) return;
     setCoverImageFile(file);
     setCoverPreview(URL.createObjectURL(file));
+  };
+
+  const handleGalleryImagesChange = (event) => {
+    const files = Array.from(event.target.files || []);
+    if (!files.length) return;
+
+    const selectedImages = files.map((file) => {
+      const preview = URL.createObjectURL(file);
+      galleryPreviewsRef.current.push(preview);
+      return {
+        id: `${file.name}-${file.size}-${file.lastModified}-${crypto.randomUUID()}`,
+        file,
+        preview,
+      };
+    });
+    setGalleryFiles((current) => [...current, ...selectedImages]);
+    event.target.value = "";
+  };
+
+  const removeGalleryImage = (imageId) => {
+    setGalleryFiles((current) => {
+      const image = current.find((item) => item.id === imageId);
+      if (image) {
+        URL.revokeObjectURL(image.preview);
+        galleryPreviewsRef.current = galleryPreviewsRef.current.filter((preview) => preview !== image.preview);
+      }
+      return current.filter((item) => item.id !== imageId);
+    });
+  };
+
+  const uploadGalleryImages = async (projectId, startOrder = 0) => {
+    for (const [index, image] of galleryFiles.entries()) {
+      const imagePayload = new FormData();
+      imagePayload.append("image", image.file);
+      imagePayload.append("sortOrder", String(startOrder + index));
+      await axiosInstance.post(`/admin/projects/${projectId}/images`, imagePayload);
+    }
   };
 
   /*
@@ -129,13 +174,16 @@ function ProjectEdit() {
       payload.append("status", form.status);
       if (coverImageFile) payload.append("coverImage", coverImageFile);
 
-      if (isNew) {
-        await axiosInstance.post("/admin/projects", payload);
-      } else {
-        await axiosInstance.patch(`/admin/projects/${id}`, payload);
+      const response = isNew
+        ? await axiosInstance.post("/admin/projects", payload)
+        : await axiosInstance.patch(`/admin/projects/${id}`, payload);
+      const savedProject = response.data?.data?.project;
+
+      if (galleryFiles.length) {
+        await uploadGalleryImages(savedProject?.id || id, savedProject?.images?.length || 0);
       }
 
-      navigate("/admin/projects");
+      navigate(`/admin/projects/${savedProject?.id || id}`);
     } catch (error) {
       console.error(error);
 
@@ -408,6 +456,46 @@ function ProjectEdit() {
             </div>
           )}
 
+        </section>
+
+        {/* Gallery Images */}
+
+        <section className="rounded-[24px] border border-slate-200 bg-white p-6">
+          <div className="mb-6">
+            <h2 className="font-serif text-xl text-[#111111]">Project Gallery</h2>
+            <p className="mt-1 text-sm text-[#999999]">
+              Add one or more images to display on the project details page.
+            </p>
+          </div>
+
+          <label className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed border-[#73B72B] bg-slate-50 px-4 py-4 text-sm font-semibold text-[#102A72] transition hover:bg-[#73B72B]/10">
+            <ImagePlus size={18} />
+            Choose gallery images
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif"
+              multiple
+              onChange={handleGalleryImagesChange}
+              className="hidden"
+            />
+          </label>
+          <p className="mt-2 text-xs text-slate-500">You can select multiple JPG, PNG, WEBP, or GIF images (up to 10 MB each).</p>
+
+          {galleryFiles.length > 0 && (
+            <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {galleryFiles.map((image) => (
+                <div key={image.id} className="relative overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
+                  <img src={image.preview} alt={image.file.name} className="h-40 w-full object-cover" />
+                  <div className="flex items-center justify-between gap-3 px-3 py-2">
+                    <span className="truncate text-xs text-slate-600">{image.file.name}</span>
+                    <button type="button" onClick={() => removeGalleryImage(image.id)} aria-label={`Remove ${image.file.name}`} className="rounded-lg p-1.5 text-slate-500 transition hover:bg-red-50 hover:text-red-600">
+                      <X size={16} />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </section>
 
         {/* Actions */}
