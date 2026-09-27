@@ -26,7 +26,7 @@ export default function FeaturedLeader({ leader }) {
         className="
           relative
           overflow-hidden
-          rounded-[40px]
+          rounded-[28px] sm:rounded-[40px]
           border
           border-slate-200
           bg-white
@@ -62,7 +62,7 @@ export default function FeaturedLeader({ leader }) {
           {/* Content Side */}
           {/* ========================================= */}
 
-          <div className="relative flex flex-col justify-center p-10 lg:p-16">
+          <div className="relative flex flex-col justify-center p-6 sm:p-10 lg:p-16">
 
             {/* Quote */}
 
@@ -87,12 +87,15 @@ export default function FeaturedLeader({ leader }) {
                 gap-3
                 rounded-full
                 bg-[#73B72B]/10
-                px-5
+                px-4
                 py-2
-                text-sm
+                text-xs
+                sm:px-5
+                sm:text-sm
                 font-bold
                 uppercase
-                tracking-[0.25em]
+                tracking-[0.16em]
+                sm:tracking-[0.25em]
                 text-[#73B72B]
               "
             >
@@ -106,7 +109,8 @@ export default function FeaturedLeader({ leader }) {
             <h2
               className="
                 mt-8
-                text-5xl
+                text-3xl
+                sm:text-5xl
                 font-black
                 leading-tight
                 text-[#102A72]
@@ -120,7 +124,8 @@ export default function FeaturedLeader({ leader }) {
             <p
               className="
                 mt-4
-                text-2xl
+                text-lg
+                sm:text-2xl
                 font-semibold
                 text-slate-600
               "
@@ -146,7 +151,7 @@ export default function FeaturedLeader({ leader }) {
 
             {/* Achievement Cards */}
 
-            <div className="mt-12 grid gap-5 md:grid-cols-3">
+            <div className="mt-8 grid gap-4 sm:mt-12 md:grid-cols-3">
 
               <motion.div
                 whileHover={{
@@ -157,7 +162,7 @@ export default function FeaturedLeader({ leader }) {
                   border
                   border-slate-200
                   bg-slate-50
-                  p-6
+                  p-5
                 "
               >
                 <Award
@@ -230,7 +235,7 @@ export default function FeaturedLeader({ leader }) {
             {/* Social Links */}
             {/* ========================================= */}
 
-            <div className="mt-12 flex flex-wrap items-center gap-4">
+            <div className="mt-8 flex flex-wrap items-center gap-3 sm:mt-12 sm:gap-4">
               {leader.socials.map((social) => {
                 const SocialIcon = social.icon;
 
@@ -247,8 +252,10 @@ export default function FeaturedLeader({ leader }) {
                     }}
                     className="
                       flex
-                      h-14
-                      w-14
+                      h-11
+                      w-11
+                      sm:h-14
+                      sm:w-14
                       items-center
                       justify-center
                       rounded-2xl
@@ -288,7 +295,7 @@ export default function FeaturedLeader({ leader }) {
                 </p>
               </div>
 
-              <div className="text-right">
+              <div className="text-left md:text-right">
 
                 <motion.h5
                   whileHover={{

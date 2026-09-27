@@ -28,7 +28,7 @@ export default function ExecutiveCard({ leader }) {
         className="
           relative
           overflow-hidden
-          rounded-[32px]
+          rounded-2xl sm:rounded-[32px]
           border
           border-slate-200
           bg-white
@@ -75,7 +75,7 @@ export default function ExecutiveCard({ leader }) {
         {/* Content */}
         {/* ========================================= */}
 
-        <div className="relative p-8">
+        <div className="relative p-5 sm:p-8">
 
           {/* Accent Line */}
 
@@ -103,8 +103,10 @@ export default function ExecutiveCard({ leader }) {
 
           <h3
             className="
-              mt-6
-              text-3xl
+              mt-5
+              text-2xl
+              sm:mt-6
+              sm:text-3xl
               font-black
               text-[#102A72]
             "
@@ -205,7 +207,7 @@ export default function ExecutiveCard({ leader }) {
             pointer-events-none
             absolute
             inset-0
-            rounded-[32px]
+            rounded-2xl sm:rounded-[32px]
             border-2
             border-[#73B72B]
           "

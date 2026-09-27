@@ -16,7 +16,8 @@ export default function StorySection() {
         relative
         overflow-hidden
         bg-white
-        py-28
+        py-16
+        sm:py-24
         lg:py-36
       "
     >
@@ -146,8 +147,8 @@ export default function StorySection() {
       {/* Container */}
       {/* ========================================= */}
 
-      <div className="container relative mx-auto px-6">
-        <div className="grid items-center gap-20 lg:grid-cols-2">
+      <div className="container relative mx-auto px-4 sm:px-6">
+        <div className="grid items-center gap-12 lg:gap-20 lg:grid-cols-2">
 
           {/* ========================================= */}
           {/* Left Content */}
@@ -171,14 +172,17 @@ export default function StorySection() {
           >
             {/* Eyebrow */}
 
-            <div className="mb-6 flex items-center gap-4">
+            <div className="mb-6 flex items-center gap-3 sm:gap-4">
               <span className="h-[2px] w-14 bg-[#73B72B]" />
 
               <span
                 className="
                   font-bold
                   uppercase
-                  tracking-[0.35em]
+                  text-xs
+                  tracking-[0.22em]
+                  sm:text-base
+                  sm:tracking-[0.35em]
                   text-[#73B72B]
                 "
               >
@@ -190,10 +194,11 @@ export default function StorySection() {
 
             <h2
               className="
-                text-5xl
+                text-3xl
                 font-black
                 leading-tight
                 text-[#102A72]
+                sm:text-5xl
                 md:text-6xl
               "
             >
@@ -257,7 +262,7 @@ export default function StorySection() {
             {/* Achievements */}
             {/* ========================================= */}
 
-            <div className="mt-12 space-y-5">
+            <div className="mt-9 space-y-4 sm:mt-12 sm:space-y-5">
               {achievements.map((item, index) => {
                 const Icon = item.icon;
 
@@ -283,12 +288,14 @@ export default function StorySection() {
                       group
                       flex
                       items-start
-                      gap-5
+                      gap-3
                       rounded-3xl
                       border
                       border-slate-200
                       bg-white
-                      p-5
+                      p-4
+                      sm:gap-5
+                      sm:p-5
                       shadow-sm
                       transition-all
                       duration-300
@@ -300,8 +307,10 @@ export default function StorySection() {
                     <div
                       className="
                         flex
-                        h-14
-                        w-14
+                        h-11
+                        w-11
+                        sm:h-14
+                        sm:w-14
                         shrink-0
                         items-center
                         justify-center
@@ -314,7 +323,8 @@ export default function StorySection() {
                         group-hover:text-white
                       "
                     >
-                      <Icon size={24} />
+                      <Icon size={20} className="sm:hidden" />
+                      <Icon size={24} className="hidden sm:block" />
                     </div>
 
                     <div>
@@ -374,7 +384,9 @@ export default function StorySection() {
                 src={storyImage}
                 alt="Ecohome Concepts"
                 className="
-                  h-[650px]
+                  h-[380px]
+                  sm:h-[520px]
+                  lg:h-[650px]
                   w-full
                   object-cover
                   transition-transform
@@ -438,6 +450,7 @@ export default function StorySection() {
               className="
                 absolute
                 -left-10
+                hidden
                 top-12
                 z-20
                 rounded-[28px]
@@ -447,6 +460,7 @@ export default function StorySection() {
                 p-7
                 shadow-[0_25px_60px_rgba(15,23,42,.18)]
                 backdrop-blur-xl
+                lg:block
               "
             >
               <h2 className="text-5xl font-black text-[#102A72]">
@@ -482,6 +496,7 @@ export default function StorySection() {
               className="
                 absolute
                 -right-10
+                hidden
                 bottom-24
                 z-20
                 rounded-[28px]
@@ -489,6 +504,7 @@ export default function StorySection() {
                 p-8
                 text-white
                 shadow-[0_25px_70px_rgba(16,42,114,.35)]
+                lg:block
               "
             >
               <h2 className="text-5xl font-black">
@@ -525,6 +541,7 @@ export default function StorySection() {
                 absolute
                 left-10
                 bottom-10
+                hidden
                 z-10
                 w-64
                 rounded-[28px]
@@ -533,6 +550,7 @@ export default function StorySection() {
                 bg-white/95
                 p-6
                 shadow-[0_20px_60px_rgba(15,23,42,.15)]
+                lg:block
               "
             >
               <span

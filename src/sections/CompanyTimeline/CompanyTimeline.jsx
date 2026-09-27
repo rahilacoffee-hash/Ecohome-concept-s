@@ -11,7 +11,8 @@ export default function CompanyTimeline() {
         relative
         overflow-hidden
         bg-slate-50
-        py-28
+        py-16
+        sm:py-24
         lg:py-36
       "
     >
@@ -151,7 +152,7 @@ export default function CompanyTimeline() {
       {/* Container */}
       {/* ========================================= */}
 
-      <div className="container relative mx-auto px-6">
+      <div className="container relative mx-auto px-4 sm:px-6">
         {/* ========================================= */}
         {/* Section Header */}
         {/* ========================================= */}
@@ -173,7 +174,9 @@ export default function CompanyTimeline() {
           }}
           className="
             mx-auto
-            mb-24
+            mb-12
+            sm:mb-20
+            lg:mb-24
             max-w-3xl
             text-center
           "
@@ -193,10 +196,11 @@ export default function CompanyTimeline() {
           <h2
             className="
               mt-6
-              text-5xl
+              text-3xl
               font-black
               leading-tight
               text-[#102A72]
+              sm:text-5xl
               md:text-6xl
             "
           >

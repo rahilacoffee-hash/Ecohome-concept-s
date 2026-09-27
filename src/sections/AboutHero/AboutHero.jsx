@@ -17,10 +17,13 @@ export default function AboutHero() {
       className="
         relative
         flex
-        min-h-screen
+        min-h-[680px]
         items-center
         overflow-hidden
         bg-[#060f2e]
+        py-28
+        sm:min-h-screen
+        sm:py-32
       "
     >
       {/* ========================================= */}
@@ -217,8 +220,8 @@ export default function AboutHero() {
       {/* Content Wrapper */}
       {/* ========================================= */}
 
-      <div className="container relative z-10 mx-auto px-6 lg:px-10">
-        <div className="grid items-center gap-20 lg:grid-cols-[1.15fr_.85fr]">          {/* ========================================= */}
+      <div className="container relative z-10 mx-auto w-full px-4 sm:px-6 lg:px-10">
+        <div className="grid items-center gap-12 lg:gap-20 lg:grid-cols-[1.15fr_.85fr]">          {/* ========================================= */}
           {/* Left Content */}
           {/* ========================================= */}
 
@@ -245,7 +248,7 @@ export default function AboutHero() {
 
             {/* Eyebrow */}
 
-            <div className="mb-7 flex items-center gap-4">
+            <div className="mb-6 flex items-center gap-3 sm:mb-7 sm:gap-4">
               <div
                 className="
                   flex
@@ -266,7 +269,7 @@ export default function AboutHero() {
                 />
               </div>
 
-              <span className="text-sm font-bold uppercase tracking-[0.35em] text-[#73B72B]">
+              <span className="text-xs font-bold uppercase tracking-[0.22em] text-[#73B72B] sm:text-sm sm:tracking-[0.35em]">
                 {aboutHero.eyebrow}
               </span>
 
@@ -292,10 +295,11 @@ export default function AboutHero() {
                 duration: 0.8,
               }}
               className="
-                text-5xl
+                text-4xl
                 font-black
                 leading-[1.02]
                 text-white
+                sm:text-5xl
                 md:text-6xl
                 xl:text-7xl
               "
@@ -378,7 +382,7 @@ export default function AboutHero() {
                 delay: 0.5,
                 duration: 0.7,
               }}
-              className="mt-12 flex flex-wrap gap-5"
+              className="mt-8 flex flex-col gap-3 sm:mt-12 sm:flex-row sm:flex-wrap sm:gap-5"
             >
               {/* Primary */}
 
@@ -391,8 +395,11 @@ export default function AboutHero() {
                   gap-3
                   rounded-full
                   bg-[#73B72B]
-                  px-8
-                  py-4
+                  justify-center
+                  px-6
+                  py-3.5
+                  sm:px-8
+                  sm:py-4
                   font-semibold
                   text-white
                   shadow-[0_15px_40px_rgba(115,183,43,.35)]
@@ -423,8 +430,11 @@ export default function AboutHero() {
                   border
                   border-white/20
                   bg-white/5
-                  px-8
-                  py-4
+                  text-center
+                  px-6
+                  py-3.5
+                  sm:px-8
+                  sm:py-4
                   font-semibold
                   text-white
                   backdrop-blur-lg

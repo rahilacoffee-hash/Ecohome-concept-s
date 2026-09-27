@@ -54,7 +54,7 @@ export default function TimelineItem({
 
       <div
         className={`
-          ${isLeft ? "lg:block" : "lg:invisible"}
+          ${isLeft ? "block" : "hidden lg:block lg:invisible"}
         `}
       >
         <motion.div
@@ -68,11 +68,13 @@ export default function TimelineItem({
           className="
             group
             relative
-            rounded-[30px]
+            rounded-2xl
             border
+            sm:rounded-[30px]
             border-slate-200
             bg-white
-            p-8
+            p-5
+            sm:p-8
             shadow-lg
             overflow-hidden
           "
@@ -109,11 +111,11 @@ export default function TimelineItem({
             {item.year}
           </span>
 
-          <h3 className="mt-6 text-3xl font-black text-[#102A72]">
+          <h3 className="mt-5 text-2xl sm:mt-6 sm:text-3xl font-black text-[#102A72]">
             {item.title}
           </h3>
 
-          <p className="mt-5 leading-8 text-slate-600">
+          <p className="mt-4 text-sm leading-6 sm:mt-5 sm:text-base sm:leading-8 text-slate-600">
             {item.description}
           </p>
         </motion.div>
@@ -121,7 +123,7 @@ export default function TimelineItem({
 
       {/* ================= CENTER ================= */}
 
-      <div className="relative flex justify-center">
+      <div className="relative hidden justify-center lg:flex">
 
         {/* Vertical Line */}
 
@@ -170,7 +172,7 @@ export default function TimelineItem({
 
       <div
         className={`
-          ${!isLeft ? "lg:block" : "lg:invisible"}
+          ${!isLeft ? "block" : "hidden lg:block lg:invisible"}
         `}
       >
         <motion.div
@@ -185,11 +187,13 @@ export default function TimelineItem({
             group
             relative
             overflow-hidden
-            rounded-[30px]
+            rounded-2xl
             border
+            sm:rounded-[30px]
             border-slate-200
             bg-white
-            p-8
+            p-5
+            sm:p-8
             shadow-lg
           "
         >
@@ -225,11 +229,11 @@ export default function TimelineItem({
             {item.year}
           </span>
 
-          <h3 className="mt-6 text-3xl font-black text-[#102A72]">
+          <h3 className="mt-5 text-2xl sm:mt-6 sm:text-3xl font-black text-[#102A72]">
             {item.title}
           </h3>
 
-          <p className="mt-5 leading-8 text-slate-600">
+          <p className="mt-4 text-sm leading-6 sm:mt-5 sm:text-base sm:leading-8 text-slate-600">
             {item.description}
           </p>
         </motion.div>

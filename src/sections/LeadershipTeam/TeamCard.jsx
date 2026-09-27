@@ -28,7 +28,7 @@ export default function TeamCard({ member }) {
         className="
           relative
           overflow-hidden
-          rounded-[28px]
+          rounded-2xl sm:rounded-[28px]
           border
           border-slate-200
           bg-white
@@ -75,7 +75,7 @@ export default function TeamCard({ member }) {
         {/* Content */}
         {/* ========================================= */}
 
-        <div className="relative p-6">
+        <div className="relative p-5 sm:p-6">
 
           {/* Accent Line */}
 
@@ -89,13 +89,13 @@ export default function TeamCard({ member }) {
 
           {/* Name */}
 
-          <h3 className="mt-5 text-2xl font-black text-[#102A72]">
+          <h3 className="mt-4 text-xl sm:mt-5 sm:text-2xl font-black text-[#102A72]">
             {member.name}
           </h3>
 
           {/* Position */}
 
-          <p className="mt-2 text-sm font-semibold uppercase tracking-[0.15em] text-slate-500">
+          <p className="mt-2 text-sm font-semibold uppercase tracking-[0.1em] sm:tracking-[0.15em] text-slate-500">
             {member.position}
           </p>
 
@@ -168,7 +168,7 @@ export default function TeamCard({ member }) {
             pointer-events-none
             absolute
             inset-0
-            rounded-[28px]
+            rounded-2xl sm:rounded-[28px]
             border-2
             border-[#73B72B]
           "

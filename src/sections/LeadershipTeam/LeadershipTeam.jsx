@@ -14,7 +14,7 @@ export default function LeadershipTeam() {
   return (
     <section
       id="leadership"
-      className="relative overflow-hidden bg-white py-24 lg:py-32"
+      className="relative overflow-hidden bg-white py-16 sm:py-24 lg:py-32"
     >
       {/* ========================================= */}
       {/* Background Decorations */}
@@ -107,7 +107,7 @@ export default function LeadershipTeam() {
       {/* Content */}
       {/* ========================================= */}
 
-      <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
         {/* ========================================= */}
         {/* Section Heading */}
@@ -128,7 +128,7 @@ export default function LeadershipTeam() {
           transition={{
             duration: 0.7,
           }}
-          className="mx-auto mb-20 max-w-3xl text-center"
+          className="mx-auto mb-12 max-w-3xl text-center sm:mb-20"
         >
           {/* Eyebrow */}
 
@@ -157,10 +157,11 @@ export default function LeadershipTeam() {
           <h2
             className="
               mt-8
-              text-5xl
+              text-3xl
               font-black
               leading-tight
               text-[#102A72]
+              sm:text-5xl
               md:text-6xl
             "
           >
@@ -215,7 +216,7 @@ export default function LeadershipTeam() {
           transition={{
             duration: 0.6,
           }}
-          className="mb-14 text-center"
+          className="mb-10 text-center sm:mb-14"
         >
           <span
             className="
@@ -238,7 +239,8 @@ export default function LeadershipTeam() {
           <h3
             className="
               mt-5
-              text-4xl
+              text-2xl
+              sm:text-4xl
               font-black
               text-[#102A72]
             "
@@ -268,7 +270,7 @@ export default function LeadershipTeam() {
         {/* Executive Cards */}
         {/* ========================================= */}
 
-        <div className="mb-28 grid gap-10 lg:grid-cols-2">
+        <div className="mb-16 grid gap-6 sm:mb-28 sm:gap-10 lg:grid-cols-2">
 
           {executiveLeaders.map((leader, index) => (
             <motion.div
@@ -312,7 +314,7 @@ export default function LeadershipTeam() {
           transition={{
             duration: 0.6,
           }}
-          className="mb-14 text-center"
+          className="mb-10 text-center sm:mb-14"
         >
           <span
             className="
@@ -335,7 +337,8 @@ export default function LeadershipTeam() {
           <h3
             className="
               mt-5
-              text-4xl
+              text-2xl
+              sm:text-4xl
               font-black
               text-[#102A72]
             "
@@ -421,7 +424,8 @@ export default function LeadershipTeam() {
           }}
           className="
             mx-auto
-            mt-24
+            mt-16
+            sm:mt-24
             max-w-5xl
             rounded-[36px]
             border
@@ -430,8 +434,9 @@ export default function LeadershipTeam() {
             from-[#102A72]
             via-[#0b1f56]
             to-[#060f2e]
-            p-10
+            p-6
             text-center
+            sm:p-10
             shadow-[0_25px_80px_rgba(16,42,114,.18)]
           "
         >
